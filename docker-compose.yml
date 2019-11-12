@@ -20,4 +20,6 @@ services:
     ports:
       - '127.0.0.1:8000:8000'
     volumes:
-      - ./:/app
+      # here :delegated speeds up the mount for macOS
+      # See https://docs.docker.com/docker-for-mac/osxfs-caching/
+      - ./:/app:delegated
