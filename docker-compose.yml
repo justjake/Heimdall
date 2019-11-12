@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  heimdall:
+    container_name: heimdall-dev
+    build: '.'
+    init: true
+    command:
+      - sh
+      - "-c"
+      - |
+        set -e
+        if ! [ -f .env ] ; then
+          echo "no .env: Performing first-time setup"
+          cp .env.example .env
+          php artisan key:generate
+          php artisan migrate
+          php artisan db:seed
+        fi
+        exec php artisan serve --host 0.0.0.0
+    ports:
+      - '127.0.0.1:8000:8000'
+    volumes:
+      - ./:/app
